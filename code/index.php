@@ -8,6 +8,8 @@ $coloredBallsDistribution = [
 ];
 $groupColoredBalls = new \test\GroupColoredBalls();
 $groups =  $groupColoredBalls->group($coloredBallsDistribution);
+echo "<pre>";
+print_r($groups);
 
 
 

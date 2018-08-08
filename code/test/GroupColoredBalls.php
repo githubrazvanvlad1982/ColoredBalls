@@ -19,20 +19,21 @@ class GroupColoredBalls
         }
 
         $groups = [];
-        /**
-         * @var int $currentColoredBallsIndex
-         * @var  ColoredBalls $coloredBalls
-         */
-        foreach ($coloredBallsDistribution as $currentColoredBallsIndex => $coloredBalls) {
-            $group[] = $coloredBalls;
+        $ballsPerGroup = $this->getBallsPerGroup($coloredBallsDistribution);
 
+         /** @var  $coloredBalls */
+        foreach ($coloredBallsDistribution as $coloredBallsDistributionIndex => $coloredBalls) {
+            $group[] = $coloredBalls;
             $groupBallsNumber = $coloredBalls->getNumber();
 
-            if ($groupBallsNumber < count($coloredBallsDistribution)) {
-                $remainingBalsNumber = count($coloredBallsDistribution) - $groupBallsNumber;
-                $nextColoredBalls = $coloredBallsDistribution[$currentColoredBallsIndex + 1];
-                $group[] =  new ColoredBalls($nextColoredBalls->getColor(), $remainingBalsNumber);
-                $nextColoredBalls->decreaseNumber($remainingBalsNumber);
+            if ($groupBallsNumber < $ballsPerGroup) {
+                $groupRemainingBalls = $ballsPerGroup - $groupBallsNumber;
+
+                $coloredBalls = $this->findOtherColoredBallsToFillGroup($coloredBallsDistribution, $coloredBallsDistributionIndex);
+
+                $group[] =  new ColoredBalls($coloredBalls->getColor(), $groupRemainingBalls);
+
+                $coloredBalls->decreaseNumber($groupRemainingBalls);
             }
 
             $groups[] =  $group;
@@ -40,5 +41,28 @@ class GroupColoredBalls
         }
 
         return $groups;
+    }
+
+    /**
+     * @param array $coloredBallsDistribution
+     *
+     * @return int
+     */
+    protected function getBallsPerGroup(array $coloredBallsDistribution): int
+    {
+        return count($coloredBallsDistribution);
+    }
+
+    /**
+     * @param array $coloredBallsDistribution
+     * @param int $currentColoredBallsIndex
+     *
+     * @return mixed
+     */
+    protected function findOtherColoredBallsToFillGroup(array $coloredBallsDistribution, int $currentColoredBallsIndex)
+    {
+        $coloredBalls = $coloredBallsDistribution[$currentColoredBallsIndex + 1];
+
+        return $coloredBalls;
     }
 }

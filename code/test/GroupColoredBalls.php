@@ -21,22 +21,30 @@ class GroupColoredBalls
         $groups = [];
         $ballsPerGroup = $this->getBallsPerGroup($coloredBallsDistribution);
 
+        usort($coloredBallsDistribution, function(ColoredBalls $a, ColoredBalls $b) {
+            return $a->getNumber() > $b->getNumber();
+        });
+
+
          /** @var  $coloredBalls */
         foreach ($coloredBallsDistribution as $coloredBallsDistributionIndex => $coloredBalls) {
-            $group[] = $coloredBalls;
+            $group = new Group();
+            $group->addColoredBalls($coloredBalls);
+
             $groupBallsNumber = $coloredBalls->getNumber();
 
             if ($groupBallsNumber < $ballsPerGroup) {
                 $groupRemainingBalls = $ballsPerGroup - $groupBallsNumber;
 
-                $coloredBalls = $this->findOtherColoredBallsToFillGroup($coloredBallsDistribution, $coloredBallsDistributionIndex);
+                $coloredBalls = $this->findOtherColoredBallsToFillGroup($coloredBallsDistribution, $coloredBallsDistributionIndex, $groupRemainingBalls);
 
-                $group[] =  new ColoredBalls($coloredBalls->getColor(), $groupRemainingBalls);
+                $group->addColoredBalls(new ColoredBalls($coloredBalls->getColor(), $groupRemainingBalls));
 
                 $coloredBalls->decreaseNumber($groupRemainingBalls);
             }
 
             $groups[] =  $group;
+
             unset($group);
         }
 
@@ -56,13 +64,19 @@ class GroupColoredBalls
     /**
      * @param array $coloredBallsDistribution
      * @param int $currentColoredBallsIndex
+     * @param int $groupRemainingBalls
      *
-     * @return mixed
+     * @return ColoredBalls
      */
-    protected function findOtherColoredBallsToFillGroup(array $coloredBallsDistribution, int $currentColoredBallsIndex)
+    protected function findOtherColoredBallsToFillGroup(array $coloredBallsDistribution, int $currentColoredBallsIndex, int $groupRemainingBalls)
     {
-        $coloredBalls = $coloredBallsDistribution[$currentColoredBallsIndex + 1];
 
-        return $coloredBalls;
+        for ($index = $currentColoredBallsIndex + 1; $index < count($coloredBallsDistribution); $index++ ) {
+            /** @var ColoredBalls $coloredBalls */
+            $candidateColoredBalls = isset($coloredBallsDistribution[$index]) ? $coloredBallsDistribution[$index]: null;
+            if ($candidateColoredBalls && $candidateColoredBalls->getNumber() >= $groupRemainingBalls) {
+                return $coloredBallsDistribution[$index];
+            }
+        }
     }
 }

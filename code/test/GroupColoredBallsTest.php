@@ -7,90 +7,217 @@ use PHPUnit\Framework\TestCase;
 class GroupColoredBallsTest extends TestCase
 {
 
-    public function testNothing()
+    public function test_zero_colored_balls_grouping()
     {
-        $this->assertEmpty('');
+        $this->assertEquals([], (new GroupColoredBalls())->group([]));
     }
 
-    public function test_0_colors_returns_0_groups()
+    public function test_one_colored_balls()
     {
-        $groupColoredBalls = new GroupColoredBalls();
-
-        $this->assertEquals(0, count($groupColoredBalls->group([])));
-    }
-
-    public function test_1_color_returns_1_group()
-    {
-        $groupColoredBalls = new GroupColoredBalls();
-
-        $coloredBallsDistribution = new ColoredBalls(1, 1);
-
-        $this->assertEquals(1, count($groupColoredBalls->group([$coloredBallsDistribution])));
-    }
-
-    public function test_1_color_returns_1_group_with_1_colored_ball()
-    {
-        $groupColoredBalls = new GroupColoredBalls();
-
-        $coloredBallsDistribution = new ColoredBalls(1, 1);
-
-        $groups = $groupColoredBalls->group([$coloredBallsDistribution]);
-        $groupColoredBalls = current($groups);
-
-        $this->assertEquals(1, count($groupColoredBalls));
-    }
-
-    public function test_1_colored_ball_with_1_ball_of_collor_1_returns_a_group_with_just_this_colored_ball()
-    {
-        $groupColoredBalls = new GroupColoredBalls();
-
-        $coloredBallsDistribution = new ColoredBalls(1, 1);
-
-        $groups = $groupColoredBalls->group([$coloredBallsDistribution]);
-        $groupColoredBalls = current($groups);
-
-        /** @var ColoredBalls $coloredBalls */
-        $coloredBalls = current($groupColoredBalls);
-
-        $this->assertEquals(1, count($groupColoredBalls));
-        $this->assertEquals(1, $coloredBalls->getColor());
-        $this->assertEquals(1, $coloredBalls->getNumber());
-    }
-
-    public function test_2_color_returns_2_groups()
-    {
-        $groupColoredBalls = new GroupColoredBalls();
-
-        $coloredBallsDistribution = [
-            new ColoredBalls(1, 1),
-            new ColoredBalls(1, 3),
+        $distribution = [
+            new ColoredBalls(1, 1)
         ];
 
-        $groups =  $groupColoredBalls->group($coloredBallsDistribution);
-        $this->assertEquals(2, count($groups));
-    }
-
-    public function test_2_colors_returns_2_groups_with_max_2_bals_per_group()
-    {
-        $groupColoredBalls = new GroupColoredBalls();
-
-        $coloredBallsDistribution = [
-            new ColoredBalls(1, 1),
-            new ColoredBalls(1, 3),
+        $expected = [
+            [
+                new ColoredBalls(1, 1)
+            ]
         ];
 
-        $groups =  $groupColoredBalls->group($coloredBallsDistribution);
-        foreach ($groups as $group) {
-            $ballsNumber = 0;
-            /** @var ColoredBalls $coloredBalls */
-            foreach ($group as $coloredBalls) {
-                $ballsNumber += $coloredBalls->getNumber();
-            }
-
-            $this->assertEquals(2, $ballsNumber);
-        }
+        $expected = [
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(1,1)),
+        ];
 
 
-        $this->assertEquals(2, count($groups));
+        $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
     }
+
+    public function test_two_colored_balls()
+    {
+        $distribution = [
+            new ColoredBalls(1, 1),
+            new ColoredBalls(2, 3),
+        ];
+
+        $expected = [
+            (new Group())
+                ->addColoredBalls( new ColoredBalls(1, 1))
+                ->addColoredBalls( new ColoredBalls(2, 1)),
+            (new Group())
+                ->addColoredBalls( new ColoredBalls(2, 2))
+
+        ];
+
+        $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
+    }
+
+    public function test_three_balls()
+    {
+        $distribution = [
+            new ColoredBalls(1, 1),
+            new ColoredBalls(2, 1),
+            new ColoredBalls(3, 7),
+        ];
+
+        $expected = [
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(1,1))
+                ->addColoredBalls( new ColoredBalls(3, 2)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(2, 1))
+                ->addColoredBalls(new ColoredBalls(3, 2)),
+            (new Group())
+                ->addColoredBalls( new ColoredBalls(3, 3))
+        ];
+
+        $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
+    }
+
+    public function test_three_balls_second_distribution()
+    {
+        $distribution = [
+            new ColoredBalls(1, 1),
+            new ColoredBalls(2, 4),
+            new ColoredBalls(3, 4),
+        ];
+
+        $expected = [
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(1, 1))
+                ->addColoredBalls(new ColoredBalls(2, 2)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(2, 2))
+                ->addColoredBalls(new ColoredBalls(3, 1)),
+            (new Group())
+                ->addColoredBalls( new ColoredBalls(3, 3))
+        ];
+
+        $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
+    }
+
+    public function test_three_balls_third_distribution()
+    {
+        $distribution = [
+            new ColoredBalls(1, 1),
+            new ColoredBalls(2, 3),
+            new ColoredBalls(3, 5),
+        ];
+
+        $expected = [
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(1, 1))
+                ->addColoredBalls(new ColoredBalls(2, 2)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(2, 1))
+                ->addColoredBalls(new ColoredBalls(3, 2)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(3, 3))
+        ];
+
+        $groups = (new GroupColoredBalls())->group($distribution);
+        $this->assertEquals($expected, $groups);
+    }
+
+    public function test_three_balls_forth_distribution()
+    {
+        $distribution = [
+            new ColoredBalls(1, 2),
+            new ColoredBalls(2, 2),
+            new ColoredBalls(3, 5),
+        ];
+
+        $expected = [
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(1, 2))
+                ->addColoredBalls(new ColoredBalls(2, 1)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(2, 1))
+                ->addColoredBalls( new ColoredBalls(3, 2)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(3, 3))
+        ];
+
+        $groups =   (new GroupColoredBalls())->group($distribution);
+        $this->assertEquals($expected, $groups);
+    }
+
+    public function test_four_balls_first_distribution()
+    {
+        $distribution = [
+            new ColoredBalls(1, 1),
+            new ColoredBalls(2, 1),
+            new ColoredBalls(3, 1),
+            new ColoredBalls(4, 13),
+        ];
+
+        $expected = [
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(1, 1))
+                ->addColoredBalls(new ColoredBalls(4, 3)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(2, 1))
+                ->addColoredBalls(new ColoredBalls(4, 3)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(3, 1))
+                ->addColoredBalls(new ColoredBalls(4, 3)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(4, 4))
+        ];
+
+        $this->assertEquals($expected,  (new GroupColoredBalls())->group($distribution));
+    }
+
+    public function test_four_balls_second_distribution()
+    {
+        $distribution = [
+            new ColoredBalls(1, 1),
+            new ColoredBalls(2, 2),
+            new ColoredBalls(3, 4),
+            new ColoredBalls(4, 9),
+        ];
+
+        $expected = [
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(1, 1))
+                ->addColoredBalls(new ColoredBalls(3, 3)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(2, 2))
+                ->addColoredBalls(new ColoredBalls(4, 2)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(3, 1))
+                ->addColoredBalls(new ColoredBalls(4, 3)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(4, 4))
+        ];
+
+        $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
+    }
+
+    public function test_four_balls_unordered()
+    {
+        $distribution = [
+            new ColoredBalls(1, 5),
+            new ColoredBalls(2, 3),
+            new ColoredBalls(3, 6),
+            new ColoredBalls(4, 2),
+        ];
+        
+        $expected = [
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(4, 2))
+                ->addColoredBalls(new ColoredBalls(2, 2)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(2, 1))
+                ->addColoredBalls(new ColoredBalls(1, 3)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(1, 2))
+                ->addColoredBalls(new ColoredBalls(3, 2)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(3, 4))
+        ];
+
+        $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
+    }
+
 }

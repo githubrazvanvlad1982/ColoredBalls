@@ -202,7 +202,7 @@ class GroupColoredBallsTest extends TestCase
             new ColoredBalls(3, 6),
             new ColoredBalls(4, 2),
         ];
-        
+
         $expected = [
             (new Group())
                 ->addColoredBalls(new ColoredBalls(4, 2))

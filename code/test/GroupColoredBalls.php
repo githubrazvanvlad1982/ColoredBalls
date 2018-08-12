@@ -21,29 +21,28 @@ class GroupColoredBalls
         $groups = [];
         $ballsPerGroup = $this->getBallsPerGroup($coloredBallsDistribution);
 
-        usort($coloredBallsDistribution, function(ColoredBalls $a, ColoredBalls $b) {
-            return $a->getNumber() > $b->getNumber();
-        });
+        $coloredBallsDistribution = $this->sortDistributionByBallsNumberAsc();
 
 
-         /** @var  $coloredBalls */
+        /** @var  $coloredBalls */
         foreach ($coloredBallsDistribution as $coloredBallsDistributionIndex => $coloredBalls) {
             $group = new Group();
             $group->addColoredBalls($coloredBalls);
 
-            $groupBallsNumber = $coloredBalls->getNumber();
+            $ballsNumberInCurrentGroup = $coloredBalls->getNumber();
 
-            if ($groupBallsNumber < $ballsPerGroup) {
-                $groupRemainingBalls = $ballsPerGroup - $groupBallsNumber;
+            if ($ballsNumberInCurrentGroup < $ballsPerGroup) {
+                $ballsTobeAddedInGroup = $ballsPerGroup - $ballsNumberInCurrentGroup;
 
-                $coloredBalls = $this->findOtherColoredBallsToFillGroup($coloredBallsDistribution, $coloredBallsDistributionIndex, $groupRemainingBalls);
+                $coloredBalls = $this->findOtherColoredBallsToFillGroup($coloredBallsDistribution, $coloredBallsDistributionIndex, $ballsTobeAddedInGroup);
 
-                $group->addColoredBalls(new ColoredBalls($coloredBalls->getColor(), $groupRemainingBalls));
+                $group->addColoredBalls(new ColoredBalls($coloredBalls->getColor(), $ballsTobeAddedInGroup));
 
-                $coloredBalls->decreaseNumber($groupRemainingBalls);
+                $coloredBalls->decreaseNumber($ballsTobeAddedInGroup);
             }
 
             $groups[] =  $group;
+
 
             unset($group);
         }
@@ -59,6 +58,18 @@ class GroupColoredBalls
     protected function getBallsPerGroup(array $coloredBallsDistribution): int
     {
         return count($coloredBallsDistribution);
+    }
+
+    /**
+     * @return array
+     */
+    protected function sortDistributionByBallsNumberAsc(): array
+    {
+        usort($coloredBallsDistribution, function (ColoredBalls $a, ColoredBalls $b) {
+            return $a->getNumber() > $b->getNumber();
+        });
+
+        return $coloredBallsDistribution;
     }
 
     /**

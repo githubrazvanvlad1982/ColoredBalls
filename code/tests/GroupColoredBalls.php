@@ -21,7 +21,7 @@ class GroupColoredBalls
         $groups = [];
         $ballsPerGroup = $this->getBallsPerGroup($coloredBallsDistribution);
 
-        $coloredBallsDistribution = $this->sortDistributionByBallsNumberAsc();
+        $coloredBallsDistribution = $this->sortDistributionByBallsNumberAsc($coloredBallsDistribution);
 
 
         /** @var  $coloredBalls */
@@ -60,10 +60,7 @@ class GroupColoredBalls
         return count($coloredBallsDistribution);
     }
 
-    /**
-     * @return array
-     */
-    protected function sortDistributionByBallsNumberAsc(): array
+    protected function sortDistributionByBallsNumberAsc(array $coloredBallsDistribution): array
     {
         usort($coloredBallsDistribution, function (ColoredBalls $a, ColoredBalls $b) {
             return $a->getNumber() > $b->getNumber();

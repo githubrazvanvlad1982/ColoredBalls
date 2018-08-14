@@ -8,6 +8,14 @@ services:
     volumes:
       - ../code:/code
       - ./nginx/site.conf:/etc/nginx/conf.d/default.conf
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD="root"
+
   php:
     build:
       context: ./php

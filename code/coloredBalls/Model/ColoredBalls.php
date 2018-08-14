@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests;
+namespace ColoredBalls\Model;
 
 
 class ColoredBalls

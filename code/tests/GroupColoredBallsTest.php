@@ -2,6 +2,9 @@
 
 namespace Tests;
 
+use ColoredBalls\GroupColoredBalls;
+use ColoredBalls\Model\ColoredBalls;
+use ColoredBalls\Model\Group;
 use PHPUnit\Framework\TestCase;
 
 class GroupColoredBallsTest extends TestCase
@@ -19,16 +22,9 @@ class GroupColoredBallsTest extends TestCase
         ];
 
         $expected = [
-            [
-                new ColoredBalls(1, 1)
-            ]
-        ];
-
-        $expected = [
             (new Group())
                 ->addColoredBalls(new ColoredBalls(1,1)),
         ];
-
 
         $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
     }

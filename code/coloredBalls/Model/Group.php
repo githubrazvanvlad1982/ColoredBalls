@@ -1,7 +1,6 @@
 <?php
 
-namespace Tests;
-
+namespace ColoredBalls\Model;
 
 use phpDocumentor\Reflection\Types\Array_;
 

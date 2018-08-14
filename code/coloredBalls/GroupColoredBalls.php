@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace ColoredBalls;
 
+
+use ColoredBalls\Model\ColoredBalls;
+use ColoredBalls\Model\Group;
 
 class GroupColoredBalls
 {

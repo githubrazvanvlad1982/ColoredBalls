@@ -11,6 +11,8 @@ RUN apt-get update; \
 RUN  docker-php-ext-configure zip --with-libzip \
       && docker-php-ext-install zip;
 
+RUN docker-php-ext-install pdo_mysql
+
 RUN pecl install xdebug; \
     echo zend_extension="/usr/local/lib/php/extensions/no-debug-non-zts-20170718/xdebug.so" >> /usr/local/etc/php/conf.d/xdebug.ini; echo; \
     echo xdebug.remote_enable=1 >> /usr/local/etc/php/conf.d/xdebug.ini; echo; \

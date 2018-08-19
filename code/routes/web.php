@@ -11,4 +11,5 @@
 |
 */
 
-Route::get('/', 'ColoredBallsController@group');
+Route::get('/', 'ColoredBallsController@groupForm');
+Route::post('/', 'ColoredBallsController@group');

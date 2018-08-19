@@ -63,11 +63,33 @@
                 margin-bottom: 30px;
             }
         </style>
+        <script
+                src="https://code.jquery.com/jquery-3.3.1.slim.js"
+                integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA="
+                crossorigin="anonymous"></script>
     </head>
     <body>
-        <form method="POST" action="">
-
+        <form method="POST" action="" id="form">
+            {{ csrf_field() }}
             ColoredBalls number: <input type="text" name="coloredBallsNumber"><br />
+            <input type="submit" style="display: none" id="submit">
         </form>
+        <div id="template"  class="formElement" style="display: none">
+            <label for="color">Color: </label><input type="text" name="colors[]">
+            <label for="number">Number: </label><input type="text" name="numbers[]">
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('[name="coloredBallsNumber"]').change(function(){
+                    $('form .formElement').remove();
+                    var fields = $('[name="coloredBallsNumber"]').val();
+                    for (i=0; i < fields; i++) {
+                       ($("#template")).clone().show().insertAfter($('[name="coloredBallsNumber"]'));
+                    }
+                    $("#submit").show();
+                })
+
+            })
+        </script>
     </body>
 </html>

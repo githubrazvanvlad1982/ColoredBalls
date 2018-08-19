@@ -6,23 +6,35 @@ use App\Model\ColoredBallsModel;
 use ColoredBalls\GroupColoredBalls;
 use ColoredBalls\Model\ColoredBalls;
 use ColoredBalls\Model\Group;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ColoredBallsController extends Controller
 {
-    public function group()
+    public function groupForm()
     {
-        $groupedBalls = new GroupColoredBalls();
-        $groupedBalls = $groupedBalls->group([
-            new ColoredBalls(1, 2),
-            new ColoredBalls(2, 3),
-            new ColoredBalls(3, 5),
-        ]);
-
-        $this->saveGroupedBalls($groupedBalls);
-
 
         return view('colored_balls');
+    }
+
+    public function group(Request $request)
+    {
+
+        $groupedBalls = new GroupColoredBalls();
+
+        $colors = $request->input('colors');
+        $numbers = $request->input('numbers');
+
+        $coloredBallsDistribution = [];
+        foreach ($colors as $index => $color) {
+            $coloredBallsDistribution[] = new ColoredBalls($color, $numbers[$index]);
+        }
+
+        $groupedBalls = $groupedBalls->group($coloredBallsDistribution);
+        $this->saveGroupedBalls($groupedBalls);
+
+        echo "<pre>";
+        print_r($groupedBalls);
     }
 
     /**

@@ -20,8 +20,18 @@ class ColoredBallsController extends Controller
     public function group(Request $request)
     {
 
-        $groupedBalls = new GroupColoredBalls();
+        $coloredBallsDistribution = $this->getDistributionFromRequest($request);
 
+        $groupedBalls = new GroupColoredBalls();
+        $groupedBalls = $groupedBalls->group($coloredBallsDistribution);
+        $this->saveGroupedBalls($groupedBalls);
+
+        echo "<pre>";
+        print_r($groupedBalls);
+    }
+
+    private function getDistributionFromRequest(Request $request): array
+    {
         $colors = $request->input('colors');
         $numbers = $request->input('numbers');
 
@@ -29,12 +39,7 @@ class ColoredBallsController extends Controller
         foreach ($colors as $index => $color) {
             $coloredBallsDistribution[] = new ColoredBalls($color, $numbers[$index]);
         }
-
-        $groupedBalls = $groupedBalls->group($coloredBallsDistribution);
-        $this->saveGroupedBalls($groupedBalls);
-
-        echo "<pre>";
-        print_r($groupedBalls);
+        return $coloredBallsDistribution;
     }
 
     /**

@@ -190,6 +190,31 @@ class GroupColoredBallsTest extends TestCase
         $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
     }
 
+    public function test_four_balls_third_scenario()
+    {
+        $distribution = [
+            new ColoredBalls(1, 1),
+            new ColoredBalls(2, 2),
+            new ColoredBalls(3, 5),
+            new ColoredBalls(4, 8),
+        ];
+
+        $expected = [
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(1, 1))
+                ->addColoredBalls(new ColoredBalls(3, 3)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(2, 2))
+                ->addColoredBalls(new ColoredBalls(3, 2)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(4, 4)),
+            (new Group())
+                ->addColoredBalls(new ColoredBalls(4, 4))
+        ];
+
+        $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
+    }
+
     public function test_four_balls_unordered()
     {
         $distribution = [

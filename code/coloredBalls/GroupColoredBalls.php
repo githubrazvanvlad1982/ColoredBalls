@@ -30,8 +30,9 @@ class GroupColoredBalls
         /** @var  $coloredBalls */
         foreach ($coloredBallsDistribution as $coloredBallsDistributionIndex => $coloredBalls) {
             $group = new Group();
-            $group->addColoredBalls($coloredBalls);
-
+            if ($coloredBalls->getNumber())
+                $group->addColoredBalls($coloredBalls);
+            
             $ballsNumberInCurrentGroup = $coloredBalls->getNumber();
 
             if ($ballsNumberInCurrentGroup < $ballsPerGroup) {

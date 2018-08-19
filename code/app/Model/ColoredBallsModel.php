@@ -5,7 +5,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ColoredBalls extends Model
+class ColoredBallsModel extends Model
 {
     public $timestamps = false;
 }

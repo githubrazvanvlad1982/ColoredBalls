@@ -16,4 +16,11 @@ class Group
         return $this;
     }
 
+    /**
+     * @return ColoredBalls[]
+     */
+    public function getColoredBalls(): array
+    {
+        return $this->coloredBallsCollection;
+    }
 }

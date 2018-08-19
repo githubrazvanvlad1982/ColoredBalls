@@ -4,13 +4,13 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
+class GroupModel extends Model
 {
 
     public $timestamps = false;
 
     public function coloredBalls()
     {
-        return $this->hasMany(ColoredBalls::class);
+        return $this->hasMany(ColoredBallsModel::class);
     }
 }

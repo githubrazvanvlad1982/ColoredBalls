@@ -15,7 +15,7 @@ class CreateColoredBallsTable extends Migration
     {
         Schema::create('colored_balls_models', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('group_model_id', false, true);
+            $table->integer('group', false, true);
             $table->smallInteger('color', false, true);
             $table->smallInteger('number', false, true);
         });

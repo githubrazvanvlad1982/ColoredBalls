@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Model\ColoredBallsModel;
-use App\Model\GroupModel;
 use ColoredBalls\GroupColoredBalls;
 use ColoredBalls\Model\ColoredBalls;
+use ColoredBalls\Model\Group;
 use Illuminate\Support\Facades\DB;
-
 
 class ColoredBallsController extends Controller
 {
@@ -31,61 +30,35 @@ class ColoredBallsController extends Controller
      */
     private function saveGroupedBalls(array $groupedBalls): void
     {
+
         $this->clearOldData();
 
         /**
          * @var \ColoredBalls\Model\Group $coloredBallsGroup
          */
-        foreach ($groupedBalls as $groupIndex => $coloredBallsGroup) {
-            $groupModel = $this->saveGroup($groupIndex);
-            $this->saveGroupColoredBalls($coloredBallsGroup, $groupModel);
+        foreach ($groupedBalls as $group => $coloredBallsGroup) {
+            $this->saveGroupColoredBalls($group, $coloredBallsGroup);
         }
     }
 
     private function clearOldData(): void
     {
-        DB::statement('TRUNCATE TABLE group_models');
         DB::statement('TRUNCATE TABLE colored_balls_models');
     }
 
-    private function saveGroup(int $groupIndex): GroupModel
+    private function saveGroupColoredBalls(int $group, Group $coloredBallsGroup): void
     {
-        $group = $this->createGroupModelFromGroup($groupIndex);
-        $group->save();
-
-        return $group;
-    }
-
-    private function createGroupModelFromGroup(int $groupIndex): GroupModel
-    {
-        $group = new GroupModel();
-        $group->name = $groupIndex;
-
-        return $group;
-    }
-
-    /**
-     * @param \ColoredBalls\Model\Group $coloredBallsGroup
-     *
-     * @param GroupModel $group
-     */
-    private function saveGroupColoredBalls(\ColoredBalls\Model\Group $coloredBallsGroup, GroupModel $group): void
-    {
-        $coloredBallsModelCollection = [];
-
         /** @var ColoredBalls $coloredBalls */
         foreach ($coloredBallsGroup->getColoredBalls() as $coloredBalls) {
-            $coloredBallsModel = $this->createColoredBallsModelFromColoredBalls($coloredBalls);
-
-            $coloredBallsModelCollection[] = $coloredBallsModel;
+            $coloredBallsModel = $this->createColoredBallsModelFromColoredBalls($group, $coloredBalls);
+            $coloredBallsModel->save();
         }
-
-        $group->coloredBalls()->saveMany($coloredBallsModelCollection);
     }
 
-    private function createColoredBallsModelFromColoredBalls(ColoredBalls $coloredBalls): ColoredBallsModel
+    private function createColoredBallsModelFromColoredBalls(int $group, ColoredBalls $coloredBalls): ColoredBallsModel
     {
         $coloredBallsModel = new ColoredBallsModel();
+        $coloredBallsModel->group = $group;
         $coloredBallsModel->color = $coloredBalls->getColor();
         $coloredBallsModel->number = $coloredBalls->getNumber();
 

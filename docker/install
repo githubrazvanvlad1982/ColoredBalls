@@ -1,0 +1,7 @@
+#!/bin/sh
+
+docker-compose build;
+docker-compose up -d;
+docker-compose exec php composer install;
+docker-compose exec mysql mysql -u root -e "CREATE DATABASE IF NOT EXISTS colored_balls";
+docker-compose exec php php artisan migrate;

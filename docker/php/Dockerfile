@@ -31,5 +31,4 @@ RUN  echo export PATH="/root/.composer/vendor/bin:$PATH;" >> ~/.profile
 RUN  /bin/bash -c "source ~/.profile"
 
 
-CMD php /bin/composer.phar install; \
-    php-fpm
+CMD /usr/bin/composer install && php-fpm

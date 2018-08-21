@@ -31,4 +31,4 @@ RUN  echo export PATH="/root/.composer/vendor/bin:$PATH;" >> ~/.profile
 RUN  /bin/bash -c "source ~/.profile"
 
 
-CMD /usr/bin/composer install && php-fpm
+CMD php-fpm

@@ -30,5 +30,4 @@ RUN /usr/bin/composer global require "laravel/installer";
 RUN  echo export PATH="/root/.composer/vendor/bin:$PATH;" >> ~/.profile
 RUN  /bin/bash -c "source ~/.profile"
 
-
 CMD php-fpm

@@ -18,4 +18,8 @@ Pentru n=3 culori (rosu,galben,albastru) avem 9 bile  si distributia 1 bila rosi
 
 Nota: e posibil ca un algoritm general care sa functioneze pe orice distributie si orice valoare n sa aleaga alta grupare in cazul de mai sus.
 
-docker-compose exec php composer.phar install
+Instalare:
+Pentru instalare este nevoide de docker-compose version 1.22.0. Va fi folosit portul 8080
+Din directorul docker se executa install.sh.
+Aplicatia poat fi accesata din browser la localhost:8080
+

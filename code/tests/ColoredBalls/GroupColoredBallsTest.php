@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Tests\ColoredBalls;
 
 use ColoredBalls\GroupColoredBalls;
 use ColoredBalls\Model\ColoredBalls;
@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class GroupColoredBallsTest extends TestCase
 {
 
-    public function test_zero_colored_balls_grouping()
+    public function test_zero_colored_balls()
     {
         $this->assertEquals([], (new GroupColoredBalls())->group([]));
     }
@@ -70,7 +70,7 @@ class GroupColoredBallsTest extends TestCase
         $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
     }
 
-    public function test_three_balls_second_distribution()
+    public function test_three_colors_second_distribution()
     {
         $distribution = [
             new ColoredBalls(1, 1),
@@ -92,7 +92,7 @@ class GroupColoredBallsTest extends TestCase
         $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
     }
 
-    public function test_three_balls_third_distribution()
+    public function test_three_colors_third_distribution()
     {
         $distribution = [
             new ColoredBalls(1, 1),
@@ -115,7 +115,7 @@ class GroupColoredBallsTest extends TestCase
         $this->assertEquals($expected, $groups);
     }
 
-    public function test_three_balls_forth_distribution()
+    public function test_three_colors_forth_distribution()
     {
         $distribution = [
             new ColoredBalls(1, 2),
@@ -138,7 +138,7 @@ class GroupColoredBallsTest extends TestCase
         $this->assertEquals($expected, $groups);
     }
 
-    public function test_four_balls_first_distribution()
+    public function test_four_colors_first_distribution()
     {
         $distribution = [
             new ColoredBalls(1, 1),
@@ -164,7 +164,7 @@ class GroupColoredBallsTest extends TestCase
         $this->assertEquals($expected,  (new GroupColoredBalls())->group($distribution));
     }
 
-    public function test_four_balls_second_distribution()
+    public function test_four_colors_second_distribution()
     {
         $distribution = [
             new ColoredBalls(1, 1),
@@ -190,7 +190,7 @@ class GroupColoredBallsTest extends TestCase
         $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
     }
 
-    public function test_four_balls_third_scenario()
+    public function test_four_colors_third_scenario()
     {
         $distribution = [
             new ColoredBalls(1, 1),
@@ -215,7 +215,7 @@ class GroupColoredBallsTest extends TestCase
         $this->assertEquals($expected, (new GroupColoredBalls())->group($distribution));
     }
 
-    public function test_four_balls_unordered()
+    public function test_four_colors_unordered()
     {
         $distribution = [
             new ColoredBalls(1, 5),

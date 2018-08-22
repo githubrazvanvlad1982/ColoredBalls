@@ -80,7 +80,11 @@
         </div>
         <script type="text/javascript">
             $(document).ready(function(){
-                $('[name="coloredBallsNumber"]').change(function(){
+                $('[name="coloredBallsNumber"]').keyup(function(){
+                    if (!jQuery.isNumeric( $('[name="coloredBallsNumber"]').val() )) {
+                        return;
+                    }
+
                     $('form .formElement').remove();
                     var fields = $('[name="coloredBallsNumber"]').val();
                     for (i=0; i < fields; i++) {

@@ -18,6 +18,17 @@ Pentru n=3 culori (rosu,galben,albastru) avem 9 bile  si distributia 1 bila rosi
 
 Nota: e posibil ca un algoritm general care sa functioneze pe orice distributie si orice valoare n sa aleaga alta grupare in cazul de mai sus.
 
+Cum functioneaza algoritmul:
+- se ordoneaza bilele dupa numar
+- pentru fiecare culoare:
+  - se creeaza un grup nou
+  - se adauga numarul de bile al culorii daca are un numar de bile mai mare ca 0
+  - daca numarul de bile este mai mic decat numarul de bile necesare unui grup atunci:
+      - se cauta prima culoare care are bile suficiente pentru a completa grupul
+      - se adauga numarul necesar de bile la grup
+      - se scade din culoarea respectiva numarul de bile folosite
+      
+
 Instalare:
 - se instaleaza docker-compose version 1.22.0
 - se verifica daca portul 8080 este liber

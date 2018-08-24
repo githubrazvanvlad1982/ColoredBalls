@@ -31,7 +31,7 @@ Cum functioneaza algoritmul:
 
 Instalare:
 - se instaleaza docker-compose version 1.22.0
-- se verifica daca portul 8080 este liber
+- portul 8080 si portul 3306 trebuie sa fie liber
 - din directorul docker se executa install.sh
 - aplicatia poate fi accesata din browser la localhost:8080
 
